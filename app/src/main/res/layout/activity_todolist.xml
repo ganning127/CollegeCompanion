@@ -7,24 +7,26 @@
     tools:context=".todolist">
 
     <EditText
-        android:id="@+id/classNameId"
+        android:id="@+id/profNameId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:ems="10"
         android:inputType="text"
         android:text="Prof Name"
+        android:translationZ="98dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/profNameId"
+        android:id="@+id/classNameId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
         android:ems="10"
         android:inputType="text"
         android:text="Class Name"
+        android:translationZ="98dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -33,38 +35,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#ECE2FF"
         android:text="Add"
+        android:textColor="#5E35B1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
-        android:layout_width="412dp"
-        android:layout_height="586dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="1dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="404dp"
+        android:layout_height="560dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/profNameId"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:backgroundTint="#ECE2FF" />
     </LinearLayout>
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="#ECE2FF"
         android:text="back"
         android:textColor="#5E35B1"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="2dp" />
+        android:translationZ="98dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Classes"
+        android:textColor="#5940e4"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

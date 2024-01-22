@@ -1,7 +1,5 @@
 package com.example.collegecompanion;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,18 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import java.util.ArrayList;
 
-public class todolist extends Activity {
+public class TodoList extends Activity {
     private static final String TAG = "todolist: ";
 
     private ArrayList<ClassItem> items;
@@ -34,6 +30,10 @@ public class todolist extends Activity {
 
     private Button backButton;
 
+    EditText className;
+    EditText profName;
+
+    private int modIndex; // index of modification
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +43,30 @@ public class todolist extends Activity {
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.addButton);
         backButton = findViewById(R.id.backButton);
-        System.out.println("ONCREATE RUNNING");
-        System.out.println(button);
+        className = findViewById(R.id.classNameId);
+        profName = findViewById(R.id.profNameId);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("ITEM BEING ADDED");
-                addItem(view);
+                if (button.getText().equals("Save")) {
+                    System.out.println("Saving");
+                    button.setText("Add");
+
+                    ClassItem obj = items.get(modIndex);
+                    obj.className = className.getText().toString();
+                    obj.profName = profName.getText().toString();
+
+                    className.setText("");
+                    profName.setText("");
+
+                    items.set(modIndex, obj);
+                    itemsAdapter.notifyDataSetChanged(); // refresh the list
+
+                } else {
+                    addItem(view);
+                }
             }
         });
 
@@ -58,16 +74,16 @@ public class todolist extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(todolist.this, MainActivity.class);
+                Intent intent = new Intent(TodoList.this, MainActivity.class);
                 startActivity(intent);
 
             }
         });
 
 
-        items = new ArrayList<>();
+        items = Data.getInstance();
 
-        itemsAdapter = new ClassAdapter(todolist.this, items);
+        itemsAdapter = new ClassAdapter(TodoList.this, items);
 
 
         // itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
@@ -83,11 +99,24 @@ public class todolist extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getApplicationContext();
+                Log.d("TODOLIST", "long click on " + i);
+                className.setText(items.get(i).className);
+                profName.setText(items.get(i).profName);
+                modIndex = i;
+
+                button.setText("Save");
+
+                return true;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                Context context = getApplicationContext();
                 Toast.makeText(context, "Item removed", Toast.LENGTH_LONG).show();
                 items.remove(i); // index i was touched
                 itemsAdapter.notifyDataSetChanged(); // refresh the list
-
-                return true;
             }
         });
     }
