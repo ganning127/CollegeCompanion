@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -33,6 +34,9 @@ public class TodoList extends Activity {
     EditText className;
     EditText profName;
 
+    EditText daysTime;
+    EditText location;
+
     private int modIndex; // index of modification
 
     @Override
@@ -45,21 +49,28 @@ public class TodoList extends Activity {
         backButton = findViewById(R.id.backButton);
         className = findViewById(R.id.classNameId);
         profName = findViewById(R.id.profNameId);
+        daysTime = findViewById(R.id.daysTime);
+        location = findViewById(R.id.location);
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (button.getText().equals("Save")) {
-                    System.out.println("Saving");
                     button.setText("Add");
+
+                    hideKeyboard(view);
 
                     ClassItem obj = items.get(modIndex);
                     obj.className = className.getText().toString();
                     obj.profName = profName.getText().toString();
+                    obj.location = location.getText().toString();
+                    obj.daysTime = daysTime.getText().toString();
 
                     className.setText("");
                     profName.setText("");
+                    location.setText("");
+                    daysTime.setText("");
 
                     items.set(modIndex, obj);
                     itemsAdapter.notifyDataSetChanged(); // refresh the list
@@ -102,6 +113,9 @@ public class TodoList extends Activity {
                 Log.d("TODOLIST", "long click on " + i);
                 className.setText(items.get(i).className);
                 profName.setText(items.get(i).profName);
+                location.setText(items.get(i).location);
+                daysTime.setText(items.get(i).daysTime);
+
                 modIndex = i;
 
                 button.setText("Save");
@@ -122,25 +136,36 @@ public class TodoList extends Activity {
     }
 
     private void addItem(View view) {
-        System.out.println("ADDING UP...");
-
-        EditText className = findViewById(R.id.classNameId);
-        EditText profName = findViewById(R.id.profNameId);
-
         String classNameText = className.getText().toString();
         String profNameText = profName.getText().toString();
+        String locationText = location.getText().toString();
+        String daysTimeText = daysTime.getText().toString();
 
 
-        if (!classNameText.equals("") && !profNameText.equals("")) {
+        System.out.println("classNameText " + classNameText.equals(""));
+        System.out.println("profNameText " + profNameText.equals(""));
+        System.out.println("locationText " + locationText.equals(""));
+        System.out.println("daysTimeText " + daysTimeText.equals(""));
+
+        if (!classNameText.equals("") && !profNameText.equals("") && !locationText.equals("") && !daysTimeText.equals("")) {
             System.out.println("ADDING...");
-            items.add(new ClassItem(classNameText, profNameText));
-            // itemsAdapter.add(new ClassItem(classNameText, profNameText));
+            items.add(new ClassItem(classNameText, profNameText, locationText, daysTimeText));
             itemsAdapter.notifyDataSetChanged();
             className.setText("");
             profName.setText("");
+            location.setText("");
+            daysTime.setText("");
+
+
+            hideKeyboard(view);
         } else {
             Toast.makeText(getApplicationContext(), "Task name cannot be empty", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void onStart() {
@@ -184,9 +209,15 @@ class ClassItem {
     public String className;
     public String profName;
 
-    public ClassItem(String className, String profName) {
+    public String daysTime;
+
+    public String location;
+
+    public ClassItem(String className, String profName, String location, String daysTime) {
         this.className = className;
         this.profName = profName;
+        this.daysTime = daysTime;
+        this.location = location;
     }
 }
 
@@ -219,12 +250,16 @@ class ClassAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.listview_item, viewGroup, false);
         }
 
-        ClassItem tempClass = (ClassItem) getItem(i);
+        ClassItem tempObj = (ClassItem) getItem(i);
         TextView tvClassName = (TextView) view.findViewById(R.id.class_name);
         TextView tvProfName = (TextView) view.findViewById(R.id.prof_name);
+        TextView tvDaysTimeName = (TextView) view.findViewById(R.id.days_time_name);
+        TextView tvLocationName = (TextView) view.findViewById(R.id.location_name);
 
-        tvClassName.setText(tempClass.className);
-        tvProfName.setText(tempClass.profName);
+        tvClassName.setText(tempObj.className);
+        tvProfName.setText(tempObj.profName);
+        tvDaysTimeName.setText(tempObj.daysTime);
+        tvLocationName.setText(tempObj.location);
 
 
         return view;

@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="class name"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:textAlignment="textStart"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
@@ -25,6 +25,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="prof name"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/days_time_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="days time name"
+        android:textAlignment="textStart"
         android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/location_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="location name"
+        android:textAlignment="textStart"
+        android:textSize="16sp" />
+
+
 </LinearLayout>
