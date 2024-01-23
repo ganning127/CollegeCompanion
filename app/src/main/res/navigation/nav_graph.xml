@@ -33,7 +33,7 @@
         android:id="@+id/todo"
 
         android:name="com.example.collegecompanion.FirstFragment"
-        android:label="TodoList"
+        android:label="Classes"
         tools:layout="@layout/fragment_first">
         <action
             android:id="@+id/action_todo_to_FirstFragment"

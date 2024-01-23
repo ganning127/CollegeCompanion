@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class TodoList extends Activity {
-    private static final String TAG = "todolist: ";
+public class Classes extends Activity {
+    private static final String TAG = "classes: ";
 
     private ArrayList<ClassItem> items;
     // private ArrayAdapter<ClassItem> itemsAdapter;
@@ -42,7 +42,7 @@ public class TodoList extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_todolist);
+        setContentView(R.layout.activity_classes);
 
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.addButton);
@@ -85,7 +85,7 @@ public class TodoList extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(TodoList.this, MainActivity.class);
+                Intent intent = new Intent(Classes.this, MainActivity.class);
                 startActivity(intent);
 
             }
@@ -94,7 +94,7 @@ public class TodoList extends Activity {
 
         items = Data.getInstance();
 
-        itemsAdapter = new ClassAdapter(TodoList.this, items);
+        itemsAdapter = new ClassAdapter(Classes.this, items);
 
 
         // itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
@@ -110,7 +110,7 @@ public class TodoList extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getApplicationContext();
-                Log.d("TODOLIST", "long click on " + i);
+                Log.d("CLASSES", "long click on " + i);
                 className.setText(items.get(i).className);
                 profName.setText(items.get(i).profName);
                 location.setText(items.get(i).location);

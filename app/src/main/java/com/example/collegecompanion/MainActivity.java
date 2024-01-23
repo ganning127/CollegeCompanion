@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         classesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, TodoList.class);
+                Intent intent = new Intent(MainActivity.this, Classes.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivity(intent);
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         todoNavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, todolist.class);
+//                Intent intent = new Intent(MainActivity.this, Classes.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //
 //                startActivity(intent);
