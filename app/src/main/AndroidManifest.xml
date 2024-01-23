@@ -17,6 +17,10 @@
             android:exported="false"
             android:persistent="true" />
         <activity
+            android:name=".TodoList"
+            android:exported="false"
+            android:persistent="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

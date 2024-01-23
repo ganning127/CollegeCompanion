@@ -15,6 +15,9 @@
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
         <action
+            android:id="@+id/action_FirstFragment_to_classes"
+            app:destination="@id/classes" />
+        <action
             android:id="@+id/action_FirstFragment_to_todo"
             app:destination="@id/todo" />
     </fragment>
@@ -30,13 +33,23 @@
     </fragment>
 
     <fragment
-        android:id="@+id/todo"
+        android:id="@+id/classes"
 
         android:name="com.example.collegecompanion.FirstFragment"
         android:label="Classes"
         tools:layout="@layout/fragment_first">
         <action
             android:id="@+id/action_todo_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/todo"
+
+        android:name="com.example.collegecompanion.FirstFragment"
+        android:label="todolist"
+        tools:layout="@layout/fragment_first">
+        <action
+            android:id="@+id/action_todo_to_FirstFragment2"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

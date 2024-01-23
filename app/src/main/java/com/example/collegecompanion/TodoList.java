@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,10 +21,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Classes extends Activity {
-    private static final String TAG = "classes: ";
+public class TodoList extends Activity {
+    private static final String TAG = "todolist: ";
 
-    private ArrayList<ClassItem> items;
+    private ArrayList<TodoListItem> items;
     // private ArrayAdapter<ClassItem> itemsAdapter;
     BaseAdapter itemsAdapter;
     private ListView listView;
@@ -31,27 +33,19 @@ public class Classes extends Activity {
 
     private Button backButton;
 
-    EditText className;
-    EditText profName;
-
-    EditText daysTime;
-    EditText location;
+    EditText itemName;
 
     private int modIndex; // index of modification
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_classes);
+        setContentView(R.layout.activity_todolist);
 
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.addButton);
         backButton = findViewById(R.id.backButton);
-        className = findViewById(R.id.itemName);
-        profName = findViewById(R.id.profNameId);
-        daysTime = findViewById(R.id.daysTime);
-        location = findViewById(R.id.location);
-
+        itemName = findViewById(R.id.itemName);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,21 +55,17 @@ public class Classes extends Activity {
 
                     hideKeyboard(view);
 
-                    ClassItem obj = items.get(modIndex);
-                    obj.className = className.getText().toString();
-                    obj.profName = profName.getText().toString();
-                    obj.location = location.getText().toString();
-                    obj.daysTime = daysTime.getText().toString();
+                    TodoListItem obj = items.get(modIndex);
+                    obj.item = itemName.getText().toString();
+                    obj.completed = false;
 
-                    className.setText("");
-                    profName.setText("");
-                    location.setText("");
-                    daysTime.setText("");
+                    itemName.setText("");
 
                     items.set(modIndex, obj);
                     itemsAdapter.notifyDataSetChanged(); // refresh the list
 
                 } else {
+                    System.out.println("AAAAAAAAA");
                     addItem(view);
                 }
             }
@@ -85,16 +75,16 @@ public class Classes extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Classes.this, MainActivity.class);
+                Intent intent = new Intent(TodoList.this, MainActivity.class);
                 startActivity(intent);
 
             }
         });
 
 
-        items = Data.getInstance();
+        items = TodoData.getInstance();
 
-        itemsAdapter = new ClassAdapter(Classes.this, items);
+        itemsAdapter = new TodoListAdapter(TodoList.this, items);
 
 
         // itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
@@ -111,10 +101,10 @@ public class Classes extends Activity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getApplicationContext();
                 Log.d("CLASSES", "long click on " + i);
-                className.setText(items.get(i).className);
-                profName.setText(items.get(i).profName);
-                location.setText(items.get(i).location);
-                daysTime.setText(items.get(i).daysTime);
+//                className.setText(items.get(i).className);
+//                profName.setText(items.get(i).profName);
+//                location.setText(items.get(i).location);
+//                daysTime.setText(items.get(i).daysTime);
 
                 modIndex = i;
 
@@ -136,25 +126,15 @@ public class Classes extends Activity {
     }
 
     private void addItem(View view) {
-        String classNameText = className.getText().toString();
-        String profNameText = profName.getText().toString();
-        String locationText = location.getText().toString();
-        String daysTimeText = daysTime.getText().toString();
+        String itemNameText = itemName.getText().toString();
 
+        System.out.println("classNameText " + itemName.equals(""));
 
-        System.out.println("classNameText " + classNameText.equals(""));
-        System.out.println("profNameText " + profNameText.equals(""));
-        System.out.println("locationText " + locationText.equals(""));
-        System.out.println("daysTimeText " + daysTimeText.equals(""));
-
-        if (!classNameText.equals("") && !profNameText.equals("") && !locationText.equals("") && !daysTimeText.equals("")) {
+        if (!itemNameText.equals("")) {
             System.out.println("ADDING...");
-            items.add(new ClassItem(classNameText, profNameText, locationText, daysTimeText));
+            items.add(new TodoListItem(itemNameText, false));
             itemsAdapter.notifyDataSetChanged();
-            className.setText("");
-            profName.setText("");
-            location.setText("");
-            daysTime.setText("");
+            itemName.setText("");
 
 
             hideKeyboard(view);
@@ -205,26 +185,20 @@ public class Classes extends Activity {
 
 }
 
-class ClassItem {
-    public String className;
-    public String profName;
+class TodoListItem {
+    public String item;
+    public boolean completed;
 
-    public String daysTime;
-
-    public String location;
-
-    public ClassItem(String className, String profName, String location, String daysTime) {
-        this.className = className;
-        this.profName = profName;
-        this.daysTime = daysTime;
-        this.location = location;
+    public TodoListItem(String item, boolean completed) {
+        this.item = item;
+        this.completed = completed;
     }
 }
 
-class ClassAdapter extends BaseAdapter {
+class TodoListAdapter extends BaseAdapter {
     Context mContext;
-    ArrayList<ClassItem> items;
-    public ClassAdapter(Context context, ArrayList<ClassItem> items) {
+    ArrayList<TodoListItem> items;
+    public TodoListAdapter(Context context, ArrayList<TodoListItem> items) {
         mContext = context;
         this.items = items;
     }
@@ -247,20 +221,22 @@ class ClassAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.listview_item, viewGroup, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.listview_todolist_item, viewGroup, false);
         }
 
-        ClassItem tempObj = (ClassItem) getItem(i);
-        TextView tvClassName = (TextView) view.findViewById(R.id.item_name);
-        TextView tvProfName = (TextView) view.findViewById(R.id.prof_name);
-        TextView tvDaysTimeName = (TextView) view.findViewById(R.id.days_time_name);
-        TextView tvLocationName = (TextView) view.findViewById(R.id.location_name);
+        TodoListItem tempObj = (TodoListItem) getItem(i);
+        TextView tvItemName = (TextView) view.findViewById(R.id.item_name);
+        CheckBox tvCompleted = (CheckBox) view.findViewById(R.id.completed);
 
-        tvClassName.setText(tempObj.className);
-        tvProfName.setText(tempObj.profName);
-        tvDaysTimeName.setText(tempObj.daysTime);
-        tvLocationName.setText(tempObj.location);
+        tvItemName.setText(tempObj.item);
+        tvCompleted.setChecked(tempObj.completed);
 
+        tvCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                items.get(i).completed = !items.get(i).completed;
+            }
+        });
 
         return view;
     }
