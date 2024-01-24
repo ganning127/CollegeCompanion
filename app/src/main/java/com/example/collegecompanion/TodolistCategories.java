@@ -25,6 +25,7 @@ import com.example.collegecompanion.databinding.ActivityMainBinding;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringJoiner;
 
@@ -45,6 +46,9 @@ public class TodolistCategories extends AppCompatActivity {
     private EditText categoryNameInput;
 
     EditText itemName;
+
+
+    private int modIndex;
 
 
     @Override
@@ -68,16 +72,35 @@ public class TodolistCategories extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // add the category
-                addCategory(view);
+
+                if (addButton.getText().equals("Save")) {
+                    addButton.setText("Add");
+                    hideKeyboard(view);
+
+                    String oldString = categoryNamesList.get(modIndex);
+
+                    String newVal = categoryNameInput.getText().toString();
+                    // update key name in the hashmap
+                    // get the old arraylist
+                    ArrayList<TodoListItem> old = items.get(oldString);
+                    items.remove(oldString);
+                    items.put(newVal, old);
+
+                    // update key name in the lst
+                    categoryNamesList.set(modIndex, newVal);
+                    itemsAdapter.notifyDataSetChanged(); // refresh the list
+
+                } else {
+                    // add the category
+                    addCategory(view);
+                }
             }
         });
 
         items = TodoData.getInstance();
-
         categoryNamesList = new ArrayList<String>(items.keySet());
 
-        itemsAdapter = new TodoListCategoriesAdapter(TodolistCategories.this, categoryNamesList);
+        itemsAdapter = new TodoListCategoriesAdapter(TodolistCategories.this, items, categoryNamesList);
 
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
@@ -85,27 +108,38 @@ public class TodolistCategories extends AppCompatActivity {
     }
 
     private void setUpListViewListener() {
-//        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Context context = getApplicationContext();
-//                modIndex = i;
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Context context = getApplicationContext();
+                modIndex = i;
+
+                categoryNameInput.setText(categoryNamesList.get(i));
+
+                addButton.setText("Save");
+
+                return true;
+            }
+        });
 //
-//                button.setText("Save");
-//
-//                return true;
-//            }
-//        });
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
 //                Context context = getApplicationContext();
 //                Toast.makeText(context, "Item removed", Toast.LENGTH_LONG).show();
-//                items.remove(i); // index i was touched
+//                // items.remove(i); // index i was touched
+//
+//                String keyToRemove = categoryNamesList.get(i);
+//                categoryNamesList.remove(i);
+//                items.remove(keyToRemove);
+//
 //                itemsAdapter.notifyDataSetChanged(); // refresh the list
-//            }
-//        });
+                Intent intent = new Intent(TodolistCategories.this, TodoList.class);
+                intent.putExtra("filterKey", categoryNamesList.get(i));
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
 
     private void addCategory(View view) {
@@ -120,7 +154,9 @@ public class TodolistCategories extends AppCompatActivity {
                 Log.d(TAG, "addCategory: " + categoryName );
 
                 items.put(categoryName, new ArrayList<TodoListItem>());
-                categoryNamesList.add(categoryName);
+                System.out.println(items.toString());
+                System.out.println(items.keySet());
+                 categoryNamesList.add(categoryName);
                 itemsAdapter.notifyDataSetChanged();
                 categoryNameInput.setText("");
             }
@@ -139,20 +175,23 @@ public class TodolistCategories extends AppCompatActivity {
 
 class TodoListCategoriesAdapter extends BaseAdapter {
     Context mContext;
-    ArrayList<String> categories;
+    HashMap<String, ArrayList<TodoListItem>> data;
 
-    public TodoListCategoriesAdapter(Context context, ArrayList<String> categories) {
+    ArrayList<String> mCategories;
+    public TodoListCategoriesAdapter(Context context, HashMap<String, ArrayList<TodoListItem>> data, ArrayList<String> mCategories) {
         mContext = context;
-        this.categories = categories;
+        this.data = data;
+        this.mCategories = mCategories;
     }
+
     @Override
     public int getCount() {
-        return categories.size();
+        return mCategories.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return categories.get(i);
+        return mCategories.get(i);
     }
 
     @Override
@@ -167,6 +206,7 @@ class TodoListCategoriesAdapter extends BaseAdapter {
         }
 
         String text = (String) getItem(i);
+        System.out.println("AHHH:" + text);
         TextView tvCategoryName = (TextView) view.findViewById(R.id.categoryName);
 
         tvCategoryName.setText(text);

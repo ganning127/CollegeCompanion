@@ -27,6 +27,8 @@ public class TodoList extends Activity {
     private static final String TAG = "todolist: ";
 
     private HashMap<String, ArrayList<TodoListItem>> items;
+
+    public ArrayList<TodoListItem> tasks;
     // private ArrayAdapter<ClassItem> itemsAdapter;
     BaseAdapter itemsAdapter;
     private ListView listView;
@@ -39,6 +41,10 @@ public class TodoList extends Activity {
 
     EditText itemName;
 
+    TextView todoTitle;
+
+    Button delButton;
+
     private int modIndex; // index of modification
 
     @Override
@@ -50,12 +56,25 @@ public class TodoList extends Activity {
         button = findViewById(R.id.addButton);
         backButton = findViewById(R.id.backButton);
         itemName = findViewById(R.id.itemName);
+        todoTitle = findViewById(R.id.todoTitle);
+        delButton = findViewById(R.id.delButton);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             filterKey = extras.getString("filterKey");
+            todoTitle.setText(filterKey);
             //The key argument here must match that used in the other activity
         }
+
+        delButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.remove(filterKey);
+                Intent intent = new Intent(TodoList.this, TodolistCategories.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +89,12 @@ public class TodoList extends Activity {
                     obj.item = itemName.getText().toString();
                     obj.completed = false;
 
+                    tasks.set(modIndex, obj);
+
                     itemName.setText("");
 
                     items.get(filterKey).set(modIndex, obj);
                     itemsAdapter.notifyDataSetChanged(); // refresh the list
-
                 } else {
                     System.out.println("AAAAAAAAA");
                     addItem(view);
@@ -86,7 +106,7 @@ public class TodoList extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(TodoList.this, MainActivity.class);
+                Intent intent = new Intent(TodoList.this, TodolistCategories.class);
                 startActivity(intent);
 
             }
@@ -95,7 +115,8 @@ public class TodoList extends Activity {
 
         items = TodoData.getInstance();
 
-        itemsAdapter = new TodoListAdapter(TodoList.this, items, filterKey);
+        tasks = new ArrayList<>(items.get(filterKey));
+        itemsAdapter = new TodoListAdapter(TodoList.this, items, filterKey, tasks);
 
 
         // itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
@@ -103,7 +124,33 @@ public class TodoList extends Activity {
         // setContentView(R.layout.activity_todolist);
 
         listView.setAdapter(itemsAdapter);
-        setUpListViewListener();
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Context context = getApplicationContext();
+                modIndex = i;
+
+                itemName.setText(tasks.get(i).item);
+
+                button.setText("Save");
+
+                return true;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                System.out.println("ITEM REOMVE");
+                Context context = getApplicationContext();
+                Toast.makeText(context, "Item removed", Toast.LENGTH_LONG).show();
+                items.get(filterKey).remove(i);
+                tasks.remove(i); // index i was touched
+                itemsAdapter.notifyDataSetChanged(); // refresh the list
+            }
+        });
+
+
+        // setUpListViewListener();
     }
 
     // string -> arraylist<todoitem>()
@@ -113,6 +160,9 @@ public class TodoList extends Activity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getApplicationContext();
                 modIndex = i;
+                System.out.println("ON CLICKED");
+
+                itemName.setText(tasks.get(i).item);
 
                 button.setText("Save");
 
@@ -121,7 +171,6 @@ public class TodoList extends Activity {
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
                 Context context = getApplicationContext();
                 Toast.makeText(context, "Item removed", Toast.LENGTH_LONG).show();
@@ -138,7 +187,9 @@ public class TodoList extends Activity {
 
         if (!itemNameText.equals("")) {
             System.out.println("ADDING...");
-            items.get(filterKey).add(new TodoListItem(itemNameText, false));
+            TodoListItem obj = new TodoListItem(itemNameText, false);
+            items.get(filterKey).add(obj);
+            tasks.add(obj);
             itemsAdapter.notifyDataSetChanged();
             itemName.setText("");
 
@@ -205,20 +256,23 @@ class TodoListAdapter extends BaseAdapter {
     Context mContext;
     HashMap<String, ArrayList<TodoListItem>> items;
 
+    ArrayList<TodoListItem> tasks;
+
     String filterKey;
-    public TodoListAdapter(Context context, HashMap<String, ArrayList<TodoListItem>> items, String filterKey) {
+    public TodoListAdapter(Context context, HashMap<String, ArrayList<TodoListItem>> items, String filterKey, ArrayList<TodoListItem> tasks) {
         mContext = context;
         this.items = items;
+        this.tasks = tasks;
         this.filterKey = filterKey;
     }
     @Override
     public int getCount() {
-        return items.size();
+        return tasks.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return items.get(i);
+        return tasks.get(i);
     }
 
     @Override

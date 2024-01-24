@@ -15,6 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants"
         android:layout_weight="1">
 
         <TextView
@@ -24,6 +25,10 @@
             android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:text="item name"
+            android:longClickable="true"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
+
             android:textAlignment="textStart"
             android:textSize="24sp"
             android:textStyle="bold"
