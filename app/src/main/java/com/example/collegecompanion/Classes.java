@@ -14,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -248,7 +247,7 @@ class ClassAdapter extends BaseAdapter {
         }
 
         ClassItem tempObj = (ClassItem) getItem(i);
-        TextView tvClassName = (TextView) view.findViewById(R.id.item_name);
+        TextView tvClassName = (TextView) view.findViewById(R.id.categoryName);
         TextView tvProfName = (TextView) view.findViewById(R.id.prof_name);
         TextView tvDaysTimeName = (TextView) view.findViewById(R.id.days_time_name);
         TextView tvLocationName = (TextView) view.findViewById(R.id.location_name);

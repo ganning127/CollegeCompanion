@@ -19,9 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TodoList extends Activity {
     private static final String TAG = "todolist: ";
@@ -112,12 +112,6 @@ public class TodoList extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getApplicationContext();
-                Log.d("CLASSES", "long click on " + i);
-//                className.setText(items.get(i).className);
-//                profName.setText(items.get(i).profName);
-//                location.setText(items.get(i).location);
-//                daysTime.setText(items.get(i).daysTime);
-
                 modIndex = i;
 
                 button.setText("Save");
@@ -240,7 +234,7 @@ class TodoListAdapter extends BaseAdapter {
         }
 
         TodoListItem tempObj = (TodoListItem) getItem(i);
-        TextView tvItemName = (TextView) view.findViewById(R.id.item_name);
+        TextView tvItemName = (TextView) view.findViewById(R.id.categoryName);
         CheckBox tvCompleted = (CheckBox) view.findViewById(R.id.completed);
 
         tvItemName.setText(tempObj.item);

@@ -21,20 +21,13 @@
             android:id="@+id/categoryName"
             android:layout_width="355dp"
             android:layout_height="31dp"
-            android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:text="item name"
             android:textAlignment="textStart"
             android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/completed"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/completed"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
