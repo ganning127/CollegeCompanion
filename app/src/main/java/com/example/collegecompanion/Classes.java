@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class Classes extends Activity {
 
     EditText daysTime;
     EditText location;
+
 
     private int modIndex; // index of modification
 
@@ -95,11 +97,6 @@ public class Classes extends Activity {
         items = Data.getInstance();
 
         itemsAdapter = new ClassAdapter(Classes.this, items);
-
-
-        // itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
-        // setContentView(R.layout.action_bar_title_item)
-        // setContentView(R.layout.activity_todolist);
 
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
