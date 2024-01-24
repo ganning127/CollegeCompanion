@@ -167,58 +167,6 @@ public class TodoList extends Activity {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "in onStart()");
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "in onReStart()");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "in onResume()");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "in onPause()");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "in onStop()");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "in onDestroy()");
-    }
-
-}
-
-class ClassItem {
-    public String className;
-    public String profName;
-
-    public String daysTime;
-
-    public String location;
-
-    public ClassItem(String className, String profName, String location, String daysTime) {
-        this.className = className;
-        this.profName = profName;
-        this.daysTime = daysTime;
-        this.location = location;
-    }
 }
 
 class ClassAdapter extends BaseAdapter {
@@ -263,5 +211,22 @@ class ClassAdapter extends BaseAdapter {
 
 
         return view;
+    }
+}
+
+
+class ClassItem {
+    public String className;
+    public String profName;
+
+    public String daysTime;
+
+    public String location;
+
+    public ClassItem(String className, String profName, String location, String daysTime) {
+        this.className = className;
+        this.profName = profName;
+        this.daysTime = daysTime;
+        this.location = location;
     }
 }
