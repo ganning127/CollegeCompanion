@@ -13,6 +13,9 @@
         android:theme="@style/Theme.CollegeCompanion"
         tools:targetApi="31">
         <activity
+            android:name=".TodolistCategories"
+            android:exported="false" />
+        <activity
             android:name=".Assignments"
             android:exported="false" />
         <activity

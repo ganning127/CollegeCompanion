@@ -19,12 +19,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TodoList extends Activity {
     private static final String TAG = "todolist: ";
 
-    private ArrayList<TodoListItem> items;
+    private HashMap<String, ArrayList<TodoListItem>> items;
     // private ArrayAdapter<ClassItem> itemsAdapter;
     BaseAdapter itemsAdapter;
     private ListView listView;
@@ -32,6 +34,8 @@ public class TodoList extends Activity {
     private Button button;
 
     private Button backButton;
+
+    private String filterKey;
 
     EditText itemName;
 
@@ -47,6 +51,13 @@ public class TodoList extends Activity {
         backButton = findViewById(R.id.backButton);
         itemName = findViewById(R.id.itemName);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            filterKey = extras.getString("filterKey");
+            //The key argument here must match that used in the other activity
+        }
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,13 +66,13 @@ public class TodoList extends Activity {
 
                     hideKeyboard(view);
 
-                    TodoListItem obj = items.get(modIndex);
+                    TodoListItem obj = items.get(filterKey).get(modIndex);
                     obj.item = itemName.getText().toString();
                     obj.completed = false;
 
                     itemName.setText("");
 
-                    items.set(modIndex, obj);
+                    items.get(filterKey).set(modIndex, obj);
                     itemsAdapter.notifyDataSetChanged(); // refresh the list
 
                 } else {
@@ -84,7 +95,7 @@ public class TodoList extends Activity {
 
         items = TodoData.getInstance();
 
-        itemsAdapter = new TodoListAdapter(TodoList.this, items);
+        itemsAdapter = new TodoListAdapter(TodoList.this, items, filterKey);
 
 
         // itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
@@ -95,6 +106,7 @@ public class TodoList extends Activity {
         setUpListViewListener();
     }
 
+    // string -> arraylist<todoitem>()
     private void setUpListViewListener() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -132,7 +144,7 @@ public class TodoList extends Activity {
 
         if (!itemNameText.equals("")) {
             System.out.println("ADDING...");
-            items.add(new TodoListItem(itemNameText, false));
+            items.get(filterKey).add(new TodoListItem(itemNameText, false));
             itemsAdapter.notifyDataSetChanged();
             itemName.setText("");
 
@@ -197,10 +209,13 @@ class TodoListItem {
 
 class TodoListAdapter extends BaseAdapter {
     Context mContext;
-    ArrayList<TodoListItem> items;
-    public TodoListAdapter(Context context, ArrayList<TodoListItem> items) {
+    HashMap<String, ArrayList<TodoListItem>> items;
+
+    String filterKey;
+    public TodoListAdapter(Context context, HashMap<String, ArrayList<TodoListItem>> items, String filterKey) {
         mContext = context;
         this.items = items;
+        this.filterKey = filterKey;
     }
     @Override
     public int getCount() {
@@ -234,7 +249,7 @@ class TodoListAdapter extends BaseAdapter {
         tvCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                items.get(i).completed = !items.get(i).completed;
+                items.get(filterKey).get(i).completed = !items.get(filterKey).get(i).completed;
             }
         });
 
