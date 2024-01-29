@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     public Button assignmentsButton;
 
+    public Button examsButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,18 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+        examsButton = findViewById(R.id.examsNavButton);
+        examsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Exam.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                startActivity(intent);
+            }
+        });
+
 
         assignmentsButton = findViewById(R.id.assignmentsNavButton);
         assignmentsButton.setOnClickListener(new View.OnClickListener() {
