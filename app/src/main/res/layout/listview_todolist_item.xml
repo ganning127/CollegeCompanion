@@ -25,9 +25,6 @@
             android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:text="item name"
-            android:longClickable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="false"
 
             android:textAlignment="textStart"
             android:textSize="24sp"
