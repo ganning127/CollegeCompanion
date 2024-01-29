@@ -250,6 +250,10 @@ class TodoListItem {
         this.item = item;
         this.completed = completed;
     }
+
+    public String toString() {
+        return this.item + "=" + this.completed;
+    }
 }
 
 class TodoListAdapter extends BaseAdapter {
@@ -292,12 +296,19 @@ class TodoListAdapter extends BaseAdapter {
         CheckBox tvCompleted = (CheckBox) view.findViewById(R.id.completed);
 
         tvItemName.setText(tempObj.item);
+
+        tvCompleted.setOnCheckedChangeListener(null);
+
         tvCompleted.setChecked(tempObj.completed);
+
+        BaseAdapter ref = this;
 
         tvCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                System.out.println("hit check");
                 items.get(filterKey).get(i).completed = !items.get(filterKey).get(i).completed;
+                ref.notifyDataSetChanged();
             }
         });
 
