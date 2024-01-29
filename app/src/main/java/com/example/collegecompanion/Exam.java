@@ -62,6 +62,11 @@ public class Exam extends AppCompatActivity {
                     obj.examName = examNameInput.getText().toString();
                     obj.location = LocationInput.getText().toString();
                     obj.dueDate = examDateInput.getText().toString();
+
+                    examNameInput.setText("");
+                    examDateInput.setText("");
+                    LocationInput.setText("");
+
                 } else {
                     addItem(view);
                 }
@@ -123,10 +128,13 @@ public class Exam extends AppCompatActivity {
         String dueDateText = examDateInput.getText().toString();
         String LocationText = LocationInput.getText().toString();
 
+
         if (!examNameText.equals("") && !dueDateText.equals("") && !LocationText.equals("")) {
             items.add(new ExamItem(examNameText, dueDateText, LocationText));
             itemsAdapter.notifyDataSetChanged();
-
+            examNameInput.setText("");
+            examDateInput.setText("");
+            LocationInput.setText("");
 
             hideKeyboard(view);
         } else {
