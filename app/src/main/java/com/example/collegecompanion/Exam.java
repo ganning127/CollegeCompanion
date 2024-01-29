@@ -20,9 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Exam extends AppCompatActivity {
     private static final String TAG = "exams: ";
@@ -39,9 +36,6 @@ public class Exam extends AppCompatActivity {
 
     EditText LocationInput;
 
-    RadioButton sortByClassRadio;
-    RadioButton sortByDueDateRadio;
-
     private int modIndex;
 
     public Button backButton;
@@ -56,37 +50,6 @@ public class Exam extends AppCompatActivity {
         examNameInput = findViewById(R.id.examNameInput);
         examDateInput = findViewById(R.id.examDateInput);
         LocationInput = findViewById(R.id.LocationInput);
-        sortByClassRadio = findViewById(R.id.sortByClassRadio);
-        sortByDueDateRadio = findViewById(R.id.sortByDueDateRadio);
-
-        sortByClassRadio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Collections.sort(items, new Comparator<ExamItem>() {
-                    @Override
-                    public int compare(ExamItem o1, ExamItem o2) {
-                        return o1.location.compareTo(o2.location);
-                    }
-                });
-
-                itemsAdapter.notifyDataSetChanged();
-
-            }
-        });
-
-        sortByDueDateRadio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Collections.sort(items, new Comparator<ExamItem>() {
-                    @Override
-                    public int compare(ExamItem o1, ExamItem o2) {
-                        return o1.dueDate.compareTo(o2.dueDate);
-                    }
-                });
-
-                itemsAdapter.notifyDataSetChanged();
-            }
-        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +61,7 @@ public class Exam extends AppCompatActivity {
                     ExamItem obj = items.get(modIndex);
                     obj.examName = examNameInput.getText().toString();
                     obj.location = LocationInput.getText().toString();
-                    obj.dueDate = Utils.StringToCalendar(examDateInput.getText().toString());
+                    obj.dueDate = examDateInput.getText().toString();
                 } else {
                     addItem(view);
                 }
@@ -131,7 +94,7 @@ public class Exam extends AppCompatActivity {
                 Log.d(TAG, "long click on " + i);
 
                 examNameInput.setText(items.get(i).examName);
-                examDateInput.setText(Utils.CalendarToString(items.get(i).dueDate));
+                examDateInput.setText(items.get(i).dueDate);
                 LocationInput.setText(items.get(i).location);
 
                 modIndex = i;
@@ -159,11 +122,9 @@ public class Exam extends AppCompatActivity {
         String examNameText = examNameInput.getText().toString();
         String dueDateText = examDateInput.getText().toString();
         String LocationText = LocationInput.getText().toString();
-        Calendar c = Utils.StringToCalendar(dueDateText);
 
-        Log.d(TAG, c.toString());
         if (!examNameText.equals("") && !dueDateText.equals("") && !LocationText.equals("")) {
-            items.add(new ExamItem(examNameText, c, LocationText));
+            items.add(new ExamItem(examNameText, dueDateText, LocationText));
             itemsAdapter.notifyDataSetChanged();
 
 
@@ -184,11 +145,11 @@ public class Exam extends AppCompatActivity {
 
 class ExamItem {
     public String examName;
-    public Calendar dueDate;
+    public String dueDate;
 
     public String location;
 
-    public ExamItem(String a, Calendar d, String c) {
+    public ExamItem(String a, String d, String c) {
         this.examName = a;
         this.dueDate = d;
         this.location = c;
@@ -230,7 +191,7 @@ class ExamAdapter extends BaseAdapter {
         TextView tvLocation = (TextView) view.findViewById(R.id.location);
 
         tvexamName.setText(tempObj.examName);
-        tvDueDate.setText(Utils.CalendarToString(tempObj.dueDate));
+        tvDueDate.setText(tempObj.dueDate);
         tvLocation.setText(tempObj.location);
 
         return view;
