@@ -23,22 +23,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 
-public class Assignments extends AppCompatActivity {
-    private static final String TAG = "assignments: ";
-    private ArrayList<AssignmentItem> items;
+public class Exam extends AppCompatActivity {
+    private static final String TAG = "exams: ";
+    private ArrayList<ExamItem> items;
     BaseAdapter itemsAdapter;
 
     private ListView listView;
 
     private Button addButton;
 
-    EditText assignmentNameInput;
+    EditText examNameInput;
 
-    EditText dueDateInput;
+    EditText examDateInput;
 
-    EditText withClassInput;
+    EditText LocationInput;
 
     RadioButton sortByClassRadio;
     RadioButton sortByDueDateRadio;
@@ -49,24 +48,24 @@ public class Assignments extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assignments);
+        setContentView(R.layout.activity_exam);
 
         listView = findViewById(R.id.listView);
         addButton = findViewById(R.id.addButton);
         backButton = findViewById(R.id.backButton);
-        assignmentNameInput = findViewById(R.id.assignmentNameInput);
-        dueDateInput = findViewById(R.id.dueDateInput);
-        withClassInput = findViewById(R.id.withClassInput);
+        examNameInput = findViewById(R.id.examNameInput);
+        examDateInput = findViewById(R.id.examDateInput);
+        LocationInput = findViewById(R.id.LocationInput);
         sortByClassRadio = findViewById(R.id.sortByClassRadio);
         sortByDueDateRadio = findViewById(R.id.sortByDueDateRadio);
 
         sortByClassRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Collections.sort(items, new Comparator<AssignmentItem>() {
+                Collections.sort(items, new Comparator<ExamItem>() {
                     @Override
-                    public int compare(AssignmentItem o1, AssignmentItem o2) {
-                        return o1.withClass.compareTo(o2.withClass);
+                    public int compare(ExamItem o1, ExamItem o2) {
+                        return o1.location.compareTo(o2.location);
                     }
                 });
 
@@ -78,9 +77,9 @@ public class Assignments extends AppCompatActivity {
         sortByDueDateRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Collections.sort(items, new Comparator<AssignmentItem>() {
+                Collections.sort(items, new Comparator<ExamItem>() {
                     @Override
-                    public int compare(AssignmentItem o1, AssignmentItem o2) {
+                    public int compare(ExamItem o1, ExamItem o2) {
                         return o1.dueDate.compareTo(o2.dueDate);
                     }
                 });
@@ -89,7 +88,6 @@ public class Assignments extends AppCompatActivity {
             }
         });
 
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,20 +95,10 @@ public class Assignments extends AppCompatActivity {
                     addButton.setText("Add");
                     hideKeyboard(view);
 
-                    AssignmentItem obj = items.get(modIndex);
-                    obj.assignmentName = assignmentNameInput.getText().toString();
-                    obj.withClass = withClassInput.getText().toString();
-                    obj.dueDate = Utils.StringToCalendar(dueDateInput.getText().toString());
-
-
-//                    AssignmentItem obj = items.get(modIndex);
-//                    obj.assignmentName = assignmentNameInput.getText().toString();
-//
-//                    itemName.setText("");
-//
-//                    items.set(modIndex, obj);
-//                    itemsAdapter.notifyDataSetChanged(); // refresh the list
-
+                    ExamItem obj = items.get(modIndex);
+                    obj.examName = examNameInput.getText().toString();
+                    obj.location = LocationInput.getText().toString();
+                    obj.dueDate = Utils.StringToCalendar(examDateInput.getText().toString());
                 } else {
                     addItem(view);
                 }
@@ -120,14 +108,14 @@ public class Assignments extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Assignments.this, MainActivity.class);
+                Intent intent = new Intent(Exam.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
-        items = AssignmentsData.getInstance();
+        items = ExamData.getInstance();
 
-        itemsAdapter = new AssignmentAdapter(Assignments.this, items);
+        itemsAdapter = new ExamAdapter(Exam.this, items);
 
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
@@ -142,9 +130,9 @@ public class Assignments extends AppCompatActivity {
                 Context context = getApplicationContext();
                 Log.d(TAG, "long click on " + i);
 
-                assignmentNameInput.setText(items.get(i).assignmentName);
-                dueDateInput.setText(Utils.CalendarToString(items.get(i).dueDate));
-                withClassInput.setText(items.get(i).withClass);
+                examNameInput.setText(items.get(i).examName);
+                examDateInput.setText(Utils.CalendarToString(items.get(i).dueDate));
+                LocationInput.setText(items.get(i).location);
 
                 modIndex = i;
 
@@ -168,14 +156,14 @@ public class Assignments extends AppCompatActivity {
 
     private void addItem(View view) {
 
-        String assignmentNameText = assignmentNameInput.getText().toString();
-        String dueDateText = dueDateInput.getText().toString();
-        String withClassText = withClassInput.getText().toString();
+        String examNameText = examNameInput.getText().toString();
+        String dueDateText = examDateInput.getText().toString();
+        String LocationText = LocationInput.getText().toString();
         Calendar c = Utils.StringToCalendar(dueDateText);
 
         Log.d(TAG, c.toString());
-        if (!assignmentNameText.equals("") && !dueDateText.equals("") && !withClassText.equals("")) {
-            items.add(new AssignmentItem(assignmentNameText, c, withClassText));
+        if (!examNameText.equals("") && !dueDateText.equals("") && !LocationText.equals("")) {
+            items.add(new ExamItem(examNameText, c, LocationText));
             itemsAdapter.notifyDataSetChanged();
 
 
@@ -194,23 +182,23 @@ public class Assignments extends AppCompatActivity {
 
 }
 
-class AssignmentItem {
-    public String assignmentName;
+class ExamItem {
+    public String examName;
     public Calendar dueDate;
 
-    public String withClass;
+    public String location;
 
-    public AssignmentItem(String a, Calendar d, String c) {
-        this.assignmentName = a;
+    public ExamItem(String a, Calendar d, String c) {
+        this.examName = a;
         this.dueDate = d;
-        this.withClass = c;
+        this.location = c;
     }
 }
 
-class AssignmentAdapter extends BaseAdapter {
+class ExamAdapter extends BaseAdapter {
     Context mContext;
-    ArrayList<AssignmentItem> items;
-    public AssignmentAdapter(Context context, ArrayList<AssignmentItem> items) {
+    ArrayList<ExamItem> items;
+    public ExamAdapter(Context context, ArrayList<ExamItem> items) {
         mContext = context;
         this.items = items;
     }
@@ -233,37 +221,18 @@ class AssignmentAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.listview_assignment_item, viewGroup, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.listview_exam_item, viewGroup, false);
         }
 
-        AssignmentItem tempObj = (AssignmentItem) getItem(i);
-        TextView tvAssignmentName = (TextView) view.findViewById(R.id.assignmentName);
+        ExamItem tempObj = (ExamItem) getItem(i);
+        TextView tvexamName = (TextView) view.findViewById(R.id.examName);
         TextView tvDueDate = (TextView) view.findViewById(R.id.dueDate);
-        TextView tvWithClass = (TextView) view.findViewById(R.id.withClass);
+        TextView tvLocation = (TextView) view.findViewById(R.id.location);
 
-        tvAssignmentName.setText(tempObj.assignmentName);
+        tvexamName.setText(tempObj.examName);
         tvDueDate.setText(Utils.CalendarToString(tempObj.dueDate));
-        tvWithClass.setText(tempObj.withClass);
+        tvLocation.setText(tempObj.location);
 
         return view;
-    }
-}
-
-class Utils {
-    public static String CalendarToString(Calendar c) {
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH) + 1;
-        int day = c.get(Calendar.DATE);
-
-        return month + "/" + day + "/" + year;
-    }
-
-    public static Calendar StringToCalendar(String s) {
-        String[] parsedItemsInDate = s.split("/");
-
-        Calendar c = GregorianCalendar.getInstance();
-        c.set(Integer.parseInt(parsedItemsInDate[2]), Integer.parseInt(parsedItemsInDate[0]) - 1, Integer.parseInt(parsedItemsInDate[1]));
-
-        return c;
     }
 }
