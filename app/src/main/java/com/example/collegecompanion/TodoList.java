@@ -96,7 +96,6 @@ public class TodoList extends Activity {
                     items.get(filterKey).set(modIndex, obj);
                     itemsAdapter.notifyDataSetChanged(); // refresh the list
                 } else {
-                    System.out.println("AAAAAAAAA");
                     addItem(view);
                 }
             }
@@ -196,7 +195,7 @@ public class TodoList extends Activity {
 
             hideKeyboard(view);
         } else {
-            Toast.makeText(getApplicationContext(), "Task name cannot be empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Task cannot be empty", Toast.LENGTH_LONG).show();
         }
     }
 

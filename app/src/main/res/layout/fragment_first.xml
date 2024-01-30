@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#59A4E4"
+            android:backgroundTint="#A565CD"
             android:text="Classes"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_first" />
@@ -26,8 +26,8 @@
             android:id="@+id/textview_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Welcome to College Companion"
+            android:layout_marginTop="16dp"
+            android:text="College Companion"
             android:textAlignment="center"
             android:textSize="48sp"
             android:textStyle="bold"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
-            android:backgroundTint="#59A4E4"
+            android:backgroundTint="#A565CD"
             android:text="Todo-List"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_first" />
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#59A4E4"
+            android:backgroundTint="#A565CD"
             android:text="Assignments"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_first" />
@@ -63,9 +63,119 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="23dp"
             android:layout_marginEnd="24dp"
-            android:backgroundTint="#59A4E4"
+            android:backgroundTint="#A565CD"
             android:text="Exams"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todoButton" />
+
+        <TextView
+            android:id="@+id/classCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="75dp"
+            android:text="00"
+            android:textColor="#A565CD"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentsNavButton" />
+
+        <TextView
+            android:id="@+id/assignmentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="00"
+            android:textColor="#A565CD"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/classCount" />
+
+        <TextView
+            android:id="@+id/examCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="00"
+            android:textColor="#A565CD"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentCount" />
+
+        <TextView
+            android:id="@+id/todoCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="00"
+            android:textColor="#A565CD"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/examCount" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="81dp"
+            android:text="classes"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/classCount"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentsNavButton" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="20dp"
+            android:text="assignments"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/classCount"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="20dp"
+            android:text="exams"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/classCount"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="20dp"
+            android:text="todos"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/classCount"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:text="You have..."
+            android:textColor="#A565CD"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignmentsNavButton" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

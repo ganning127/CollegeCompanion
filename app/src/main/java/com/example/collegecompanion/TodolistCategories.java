@@ -161,7 +161,7 @@ public class TodolistCategories extends AppCompatActivity {
                 categoryNameInput.setText("");
             }
         } else {
-            Log.d(TAG, "category name empty");
+            Toast.makeText(getApplicationContext(), "Todo category can't be empty", Toast.LENGTH_LONG).show();
         }
         hideKeyboard(view);
 

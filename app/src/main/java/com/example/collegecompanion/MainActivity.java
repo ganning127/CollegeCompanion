@@ -20,6 +20,10 @@ import com.example.collegecompanion.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
     public Button examsButton;
 
+    TextView classCount;
+    TextView assignmentsCount;
+    TextView examsCount;
+    TextView todosCount;
+
+    ArrayList<ClassItem> classItems;
+    ArrayList<AssignmentItem> assignmentItems;
+    ArrayList<ExamItem> examItems;
+    HashMap<String, ArrayList<TodoListItem>> todosItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +59,29 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAnchorView(R.id.fab)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        classCount = findViewById(R.id.classCount);
+        classItems = Data.getInstance();
+        classCount.setText(Integer.toString(classItems.size()));
+
+        examsCount = findViewById(R.id.examCount);
+        examItems = ExamData.getInstance();
+        examsCount.setText(Integer.toString(examItems.size()));
+
+        assignmentsCount = findViewById(R.id.assignmentCount);
+        assignmentItems = AssignmentsData.getInstance();
+        assignmentsCount.setText(Integer.toString(assignmentItems.size()));
+
+        todosCount = findViewById(R.id.todoCount);
+        todosItems = TodoData.getInstance();
+        int counter = 0;
+
+        for (String key: todosItems.keySet()) {
+            counter += todosItems.get(key).size();
+        }
+
+        todosCount.setText(Integer.toString(counter));
+
+
 
         examsButton = findViewById(R.id.examsNavButton);
         examsButton.setOnClickListener(new View.OnClickListener() {
@@ -133,4 +161,6 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 }

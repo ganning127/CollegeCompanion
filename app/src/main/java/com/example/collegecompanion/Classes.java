@@ -155,7 +155,7 @@ public class Classes extends Activity {
 
             hideKeyboard(view);
         } else {
-            Toast.makeText(getApplicationContext(), "Task name cannot be empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Class fields cannot be empty", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -171,17 +171,21 @@ public class Assignments extends AppCompatActivity {
         String assignmentNameText = assignmentNameInput.getText().toString();
         String dueDateText = dueDateInput.getText().toString();
         String withClassText = withClassInput.getText().toString();
-        Calendar c = Utils.StringToCalendar(dueDateText);
 
-        Log.d(TAG, c.toString());
         if (!assignmentNameText.equals("") && !dueDateText.equals("") && !withClassText.equals("")) {
+            Calendar c;
+            try {
+                c = Utils.StringToCalendar(dueDateText);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Please enter valid date", Toast.LENGTH_LONG).show();
+                return;
+            }
             items.add(new AssignmentItem(assignmentNameText, c, withClassText));
             itemsAdapter.notifyDataSetChanged();
 
-
             hideKeyboard(view);
         } else {
-            Toast.makeText(getApplicationContext(), "Task name cannot be empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Assignment fields cannot be empty", Toast.LENGTH_LONG).show();
         }
     }
 

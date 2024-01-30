@@ -138,7 +138,7 @@ public class Exam extends AppCompatActivity {
 
             hideKeyboard(view);
         } else {
-            Toast.makeText(getApplicationContext(), "Task name cannot be empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Exam fields cannot be empty", Toast.LENGTH_LONG).show();
         }
     }
 
