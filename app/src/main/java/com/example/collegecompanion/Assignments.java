@@ -100,8 +100,18 @@ public class Assignments extends AppCompatActivity {
                     AssignmentItem obj = items.get(modIndex);
                     obj.assignmentName = assignmentNameInput.getText().toString();
                     obj.withClass = withClassInput.getText().toString();
-                    obj.dueDate = Utils.StringToCalendar(dueDateInput.getText().toString());
 
+                    try {
+                        obj.dueDate = Utils.StringToCalendar(dueDateInput.getText().toString());
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Please enter valid date", Toast.LENGTH_LONG).show();
+
+                        return;
+                    }
+
+                    assignmentNameInput.setText("");
+                    withClassInput.setText("");
+                    dueDateInput.setText("");
 
 //                    AssignmentItem obj = items.get(modIndex);
 //                    obj.assignmentName = assignmentNameInput.getText().toString();
@@ -180,11 +190,16 @@ public class Assignments extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Please enter valid date", Toast.LENGTH_LONG).show();
                 return;
             }
+
+            assignmentNameInput.setText("");
+            dueDateInput.setText("");
+            withClassInput.setText("");
             items.add(new AssignmentItem(assignmentNameText, c, withClassText));
             itemsAdapter.notifyDataSetChanged();
 
             hideKeyboard(view);
         } else {
+            System.out.println("SHOWING TOAST");
             Toast.makeText(getApplicationContext(), "Assignment fields cannot be empty", Toast.LENGTH_LONG).show();
         }
     }

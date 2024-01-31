@@ -80,6 +80,7 @@ public class TodolistCategories extends AppCompatActivity {
                     String oldString = categoryNamesList.get(modIndex);
 
                     String newVal = categoryNameInput.getText().toString();
+                    categoryNameInput.setText("");
                     // update key name in the hashmap
                     // get the old arraylist
                     ArrayList<TodoListItem> old = items.get(oldString);
